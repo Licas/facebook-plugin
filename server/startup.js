@@ -1,7 +1,11 @@
 
 Meteor.startup(function () {
     logUtils.initLog();
-    logUtils.getLogFile("");
 
     PluginMethods.start();
+
+    Restivus.configure({
+      useAuth: true,
+      prettyJson: true
+    });
 });

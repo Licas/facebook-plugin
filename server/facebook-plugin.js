@@ -1,41 +1,44 @@
-var STATE = {
-    "STARTING":"STARTING",
-    "STOPPING":"STOPPING",
-    "RUNNING":"RUNNING",
-    "STOPPED":"STOPPED",
-    "WAITING":"WAITING"
-};
+var STATE = Object.freeze({
+    STARTING:"STARTING",
+    STOPPING:"STOPPING",
+    RUNNING:"RUNNING",
+    STOPPED:"STOPPED",
+    WAITING:"WAITING"
+});
 
-var status = STATE.STOPPED;
+var status = "no";
 
 PluginMethods = {
     start:function() {
         logUtils.log("[" + moment().format() + "] start method called.");
-        status = STATE.STARTING;
+        console.log("status " + PluginMethods.status);
+        PluginMethods.status = STATE.STARTING;
         // do something to init..
-        status = STATE.STARTED;
+        PluginMethods.status = STATE.STARTED;
         //start publishing
 
-        return status;
+        return PluginMethods.status;
     },
     stop: function () {
         logUtils.log("[" + moment().format() + "] stop method called.");
-        if(status == STATE.RUNNING) {
-            status = STATE.STOPPING;
-
+        console.log("status " + PluginMethods.status);
+        if(PluginMethods.status == STATE.RUNNING) {
+            PluginMethods.status = STATE.STOPPING;
+            logUtils.log("[" + moment().format() + "] status " + STATE.STOPPING);
             //Try to stop publishing
-            status = STATE.STOPPED;
+            PluginMethods.status = STATE.STOPPED;
+            logUtils.log("[" + moment().format() + "] status " + STATE.STOPPED);
         }
 
-        return status;
+        return PluginMethods.status;
     },
-    status: function() {
+    getStatus: function() {
         logUtils.log("["+moment().format() + "] status method called.");
-        return status;
+        return PluginMethods.status;
     },
     setOptions: function(opts) {
         logUtils.log("["+moment().format() + "] setOptions method called.");
-        return status;
+        return PluginMethods.status;
     }
 }
 
@@ -48,8 +51,8 @@ Meteor.methods({
     stop: function () {
         return PluginMethods.stop();
     },
-    status: function() {
-        return PluginMethods.status();
+    getStatus: function() {
+        return PluginMethods.getStatus();
     },
     setOptions: function(options) {
         return PluginMethods.setOptions(options);

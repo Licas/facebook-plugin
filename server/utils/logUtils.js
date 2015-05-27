@@ -43,7 +43,7 @@ function log(message) {
         fs.createWriteStream(logNameFull);
     }
 
-    fs.appendFile  (logNameFull, message, function (err) {
+    fs.appendFile  (logNameFull, message + "\n", function (err) {
       if (err) throw err;
       console.log('Log has been written.');
     });
