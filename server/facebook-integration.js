@@ -21,36 +21,28 @@ POST graph.facebook.com
      "error_user_msg": "A message"
    }
  }
+
+ ### Post message body ###
+ {
+    name: "",
+    message: "",
+    description:"",
+    imageUrl:"",
+    caption:"",
+    url:""
+ }
+
+### Post image ###
+FB.api('/me/photos', 'post', { source:data});
+ URL: '/me/photos'
+ {
+    "url": http://yourimageurl --> usa questo invece di source se hai una url
+    "source" => new CURLFile('path/to/file.name', 'image/png'), --> Usa questo se hai il base64
+        'message' => 'User provided message'
+        ...
+    }
 */
 function publishToWall(post) {
 
-    FB.api('/search?q=\"'+query+'\"&type=event&center='+lat+','+lng+'&limit=200',
-          {access_token:Meteor.user().services.facebook.accessToken},
-          function(res){
-            var events= [];
 
-            if (res && !res.error) {
-
-                res.data.forEach(function(element) {
-                    var timeToCompare;
-                    if(element.end_time) {
-                        timeToCompare = element.end_time;
-                    } else {
-                        timeToCompare = element.start_time;
-                    }
-
-                    if( eventUtil.checkEventEndTime(timeToCompare) ) {
-                       fbGraphUtil.loadEventInvitedList(element.id, function(list){
-                            element.invited = list;
-                            events.push(element);
-                            //events = eventUtil.sortEventsByInvited(events);
-                            Session.set("localEvents",events);
-                        });
-                    }
-                });
-
-            } else {
-                console.log("error occurred: " + JSON.stringify(res.error));
-            }
-    });
 }
